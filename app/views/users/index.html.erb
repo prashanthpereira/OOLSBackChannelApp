@@ -30,4 +30,27 @@
 </table>
 
 <br />
+<br />
+
+<% if current_user.admin? %>
+    <h2>Reports: </h2>
+    <table>
+      <tr>
+        <th>Name: </th>
+        <th>Post Id: </th>
+        <th>Total Votes count for User: </th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <% @users.each do |user| %>
+          <tr>
+            <td><%= user.username %></td>
+            <td><%= get_all_postid_for_user(user.id) %></td>
+            <td><%= get_vote_count(get_all_postid_for_user(user.id)) %></td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>
+
 

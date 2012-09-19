@@ -46,14 +46,6 @@ module ApplicationHelper
       end
   end
 
-  # @param [Object] userid
-  def get_postid_for_user(userid)
-    @result = Post.select(:id).where(Post.user_id = User.userid)
-    @result.each do |x|
-      return x.id
-    end
-  end
-
   def get_votes_for_post(postid)
      return Vote.select(:user_id).where(:post_id => postid).count
   end
@@ -76,7 +68,20 @@ module ApplicationHelper
 
   def get_all_posts()
     return Post.where(:parent_id => nil )
+  end
 
+  def get_all_postid_for_user(userid)
+    postids = Array.new
+    postids =  Post.where(:user_id => userid).pluck(:id)
+    return postids
+  end
+
+  def get_vote_count(postids)
+    values  = Array.new
+    postids.each do |x|
+      values << get_votes_for_post(x)
+    end
+     values.inject{|sum,y| sum + y }
   end
 
 end
