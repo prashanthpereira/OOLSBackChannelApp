@@ -76,9 +76,9 @@ module ApplicationHelper
     return postids
   end
 
-  def get_vote_count(postids)
+  def get_vote_count(postid_array)
     values  = Array.new
-    postids.each do |x|
+    postid_array.each do |x|
       values << get_votes_for_post(x)
     end
      values.inject{|sum,y| sum + y }

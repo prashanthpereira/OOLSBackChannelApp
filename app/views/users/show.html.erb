@@ -19,28 +19,6 @@
   <%= @user.role %>
 </p>
 
-<table>
-  <tr>
-    <% if @user.role == 'admin' %>
-        <th>Name: </th>
-        <th>Post Id: </th>
-        <th>Votes count: </th>
-        <th></th>
-        <th></th>
-        <th></th>
-    <% end %>
-  </tr>
-
-  <% if @user.role == 'admin' %>
-          <tr>
-            <td><%= @user.name %></td>
-            <%= get_postid_for_user(@user.id)  %>
-            <%= get_votes_for_post(get_postid_for_user(@user.id)) %>
-          </tr>
-  <% end %>
-
-</table>
-
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
 
