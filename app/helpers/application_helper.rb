@@ -29,7 +29,14 @@ module ApplicationHelper
 
 
   def get_all_comments_for_post(currentpostid)
-    @result = Post.where(:parent_id => currentpostid)
+    return Post.where(:parent_id => currentpostid)
+  end
+
+  def get_all_comment_ids_for_post(currentpostid)
+    comments = Array.new
+
+    comments =  Post.where(:parent_id => currentpostid).pluck(:id)
+    return comments
   end
 
   def get_user(userid)
@@ -52,8 +59,24 @@ module ApplicationHelper
   end
 
   def get_datetime_string(t)
-
     return t.strftime('%b %d, %Y %I:%M %p')
+  end
+
+  def set_comment_session(val)
+    if (val=="true")
+    session[:comment] = "true"
+    else
+      session[:comment] = "false"
+      end
+    end
+
+  def get_comment_session()
+    return session[:comment]
+  end
+
+  def get_all_posts()
+    return Post.where(:parent_id => nil )
+
   end
 
 end
