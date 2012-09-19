@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :username, :presence => true
   validates :role, :presence => true
-  validates :password, presence: true, :confirmation =>true
-  validates :password_confirmation, :presence => true
+  validates :password, presence: true, :confirmation =>true, :on => :create
+  validates :password_confirmation, :presence => true, :on => :create
 
   validates_confirmation_of :password
   validates_uniqueness_of :username

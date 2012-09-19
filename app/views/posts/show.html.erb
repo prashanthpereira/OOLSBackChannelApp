@@ -4,7 +4,6 @@
         <span class="left"><%= get_user(@post.user_id)  %><br />
           <b>Created: </b><%=get_datetime_string(@post.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(@post.updated_at) %><br />
-          <b>Votes: </b><%=  get_votes_for_post(@post.id) %><br />
 
         </span>
   <span class="right"><%= @post.content %></span>
@@ -25,9 +24,10 @@
                   </div>
                 <% end %>
               <% end %>
-               <br>
-               <%= link_to vote_text(@post.id), Vote.find_by_post_id(@post.id)%>
           <% end %>
+           </br>
+           </br>
+           <%= link_to vote_text(@post.id), Vote.find_by_post_id(@post.id)%>
         </span>
 </div>
 

@@ -13,17 +13,17 @@
 <% @users.each do |user| %>
   <tr>
     <td><%= user.name %></td>
-    <td><%= user.username %></td>
+    <td><%= link_to user.username, user %></td>
     <% if current_user.admin? %>
         <td><%= user.password %></td>
         <td><%= user.role %></td>
     <% end %>
     <td><%= link_to 'Show', user %></td>
-    <% if user.current_user? current_user.username %>
+    <% if user.current_user? current_user.username or current_user.admin? %>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <% end %>
     <% if current_user.admin? and !user.current_user? current_user.username  %>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     <% end %>
   </tr>
 <% end %>

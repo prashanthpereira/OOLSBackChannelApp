@@ -20,6 +20,12 @@
             <td> <%= f.label :password_confirmation %></td>
             <td> <%= f.password_field :password_confirmation %></td>
           </tr>
+          <% if signed_in? and current_user.admin? %>
+              <tr>
+                <td> <%= f.label :role %></td>
+                <td> <%= select("user", :role, {"admin" => "admin", "user" => "user"}) %>
+              </tr>
+          <% end %>
         </table>
         <%= f.submit "Create my account" %>
     <% end %>

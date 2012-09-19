@@ -1,6 +1,4 @@
-
-
-<script type="text/javascript">
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
 
     function ChangeColor(tableRow, highLight)
     {
@@ -56,7 +54,6 @@
         <span class="left"><%= link_to post.user.username, post.user  %><br />
           <b>Created: </b><%=post.created_at %><br />
           <b>Updated: </b><%= post.updated_at %><br />
-          <b>Votes: </b><%=  %>
 
         </span>
         <span class="right" onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false); " onclick="javascript:toggle(<%= post.id %>);">
@@ -80,10 +77,10 @@
                   </div>
                 <% end %>
               <% end %>
-              <br>
-              <%= link_to vote_text(post.id), Vote.find_by_post_id(post.id)%>
           <% end %>
-
+          </br>
+          </br>
+          <%= link_to vote_text(post.id), Vote.find_by_post_id(post.id)%>
         </span>
 
       </div>
@@ -104,9 +101,7 @@
           <%= link_to "Edit", edit_post_path(p) %> <br />
               <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %>
              <% end %>
-          <br />
           <%= link_to 'Vote', update_vote_path() %>   <br />
-
         </span>
         </div>
     <% end %>

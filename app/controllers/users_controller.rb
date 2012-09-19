@@ -68,6 +68,12 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    if params[:user][:password].nil? or params[:user][:password].empty?
+      params[:user][:password] = @user.password
+    end
+    if params[:user][:password_confirmation].nil? or params[:user][:password_confirmation].empty?
+      params[:user][:password_confirmation] = @user.password_confirmation
+    end
 
     respond_to do |format|
       if @user.update_attributes(params[:user])

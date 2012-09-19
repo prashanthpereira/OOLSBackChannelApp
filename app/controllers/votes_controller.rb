@@ -49,8 +49,7 @@ class VotesController < ApplicationController
         post = @vote.post
         post.updated_at = @vote.updated_at
         post.save
-        format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
-        format.json { render json: @vote, status: :created, location: @vote }
+        format.html { redirect_to post, notice: 'Vote was successfully created.' }
       else
         format.html { render action: "new" }
         format.json { render json: @vote.errors, status: :unprocessable_entity }
