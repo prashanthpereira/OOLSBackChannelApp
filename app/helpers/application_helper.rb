@@ -84,4 +84,6 @@ module ApplicationHelper
      values.inject{|sum,y| sum + y }
   end
 
+
+
 end

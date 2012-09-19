@@ -13,6 +13,8 @@ OOLSBackChannelApp::Application.routes.draw do
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
   match '/posts/new', to: 'posts#create'
+  match '/search',to: 'posts#search'
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -27,6 +29,7 @@ OOLSBackChannelApp::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
+
 
   # Sample resource route with options:
   #   resources :products do
@@ -71,4 +74,7 @@ OOLSBackChannelApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
   match '/update_vote' => 'votes#update_vote', :as => 'update_vote'
+
+  match '/posts/search', :controller => 'posts', :action => 'search'
+
 end

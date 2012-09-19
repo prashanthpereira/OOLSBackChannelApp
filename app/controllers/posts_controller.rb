@@ -1,8 +1,10 @@
 class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
+  helper_method :search
 
   def index
+    Rails.logger.debug("Inside index ")
     @posts = Post.all
 
     respond_to do |format|
@@ -14,6 +16,7 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    Rails.logger.debug("Inside show ")
   @post = Post.find(params[:id])
 
     respond_to do |format|
@@ -108,6 +111,33 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+   def search
+     Rails.logger.debug("Inside search ")
+    #search = params[:search]
+
+     if not (params[:search].strip.empty?)
+
+      if(params[:theme]=="user")
+      allusers =  User.all( :select => "id", :conditions => ['username LIKE ?', "%#{params[:search].strip}%"])
+      @searchResults = Post.all(:conditions => ["user_id  in (?) and parent_id IS NULL", allusers])
+    elsif(params[:theme]=="category")
+      categories =  Category.all( :select => "id", :conditions => ['name LIKE ?', "%#{params[:search].strip}%"])
+      @searchResults = Post.all(:conditions => ["category_id  in (?) and parent_id IS NULL", categories])
+    else
+      @searchResults =  Post.all(:conditions => ['content LIKE ? and parent_id IS NULL', "%#{params[:search].strip}%"])
+
+    end
+    end
+    Rails.logger.debug(params[:search].strip)
+     Rails.logger.debug(params[:theme])
+    respond_to do |format|
+    #format.html {redirect_to :controller => "posts", :action => 'index'}
+    format.html {render action: "index" }
+    end
+   end
+
+
 
 
 end
