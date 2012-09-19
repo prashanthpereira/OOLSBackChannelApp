@@ -51,8 +51,7 @@
 
 <h1><% "javascript:currentpost" %> </h1>
 
-
-  <% @posts.each do |post| %>
+<% @posts.each do |post| %>
       <div class="post">
         <span class="left"><%= link_to post.user.username, post.user  %><br />
           <b>Created: </b><%=post.created_at %><br />
@@ -70,8 +69,7 @@
           <% end %>
           <%= link_to 'Comment', post, method: :get %>
           <% if !post.user.current_user? current_user.username or current_user.admin? %>
-              <% user_voted = Vote.count(:conditions => { :post_id => post.id, :user_id => current_user.id }) %>
-              <% if user_voted == 0 %>
+              <% if !user_voted? post.id %>
                 <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
                   <div class="inputs">
                     <%= f.hidden_field :user_id, :value => current_user.id %>
@@ -82,20 +80,8 @@
                   </div>
                 <% end %>
               <% end %>
-              <% vote_count = Vote.count(:conditions => { :post_id => post.id }) %>
               <br>
-              <%= if vote_count == 1 and user_voted == 1
-                   "You have voted"
-                 elsif vote_count == 1 and user_voted == 0
-                   "One other person has voted"
-                 elsif vote_count == 2 and  user_voted == 1
-                   "You and one other person have voted"
-                 elsif vote_count > 2 and  user_voted == 1
-                    "You and " + vote_count + " other people have voted"
-                 else
-                    vote_count.to_s + " other people have voted"
-                 end
-              %>
+              <%= link_to vote_text(post.id), Vote.find_by_post_id(post.id)%>
           <% end %>
 
         </span>

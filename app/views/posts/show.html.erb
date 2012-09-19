@@ -8,21 +8,33 @@
 
         </span>
   <span class="right"><%= @post.content %></span>
-        <span class="bottom">
-          <%  if(admin_or_owner?(@post.id)) %>
-          <%= link_to "Edit", edit_post_path(@post) %> <br />
-          <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %>
+         <span class="bottom">
+          <% if @post.user.current_user? current_user.username or current_user.admin? %>
+            <%= link_to "Edit", edit_post_path(@post) %> &nbsp;
+               <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
+          <% end %>
+           <% if !@post.user.current_user? current_user.username or current_user.admin? %>
+             <% if !user_voted? @post.id %>
+                <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
+                  <div class="inputs">
+                    <%= f.hidden_field :user_id, :value => current_user.id %>
+                    <%= f.hidden_field :post_id, :value => @post.id %>
+                  </div>
+                  <div class="actions">
+                    <%= f.button 'Vote' %>
+                  </div>
+                <% end %>
               <% end %>
-              <br />
-          <%= link_to "Vote", update_vote_path() %><br />
-
+               <br>
+               <%= link_to vote_text(@post.id), Vote.find_by_post_id(@post.id)%>
+          <% end %>
         </span>
 </div>
 
 <div id="comments"><h3><u>Comments</u></h3>
 
         <% get_all_comments_for_post(@post.id).each do |p| %>
-          <div class="post" >
+        <div class="post" >
         <span class="comment-left"><%= get_user(p.user_id) %><br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
@@ -39,12 +51,11 @@
           <%= link_to 'Vote', update_vote_path() %>   <br />
 
         </span>
-          </div>
+      </div>
+</div>
 
 
   <% end %>
-
-
-                            <br />
+ <br />
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>

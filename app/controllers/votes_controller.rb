@@ -43,8 +43,12 @@ class VotesController < ApplicationController
   # POST /votes.json
   def create
     @vote = Vote.new(params[:vote])
+
     respond_to do |format|
       if @vote.save
+        post = @vote.post
+        post.updated_at = @vote.updated_at
+        post.save
         format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
         format.json { render json: @vote, status: :created, location: @vote }
       else
@@ -81,26 +85,4 @@ class VotesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def update_vote
-    @vote = Vote.new(params[:id])
-
-    respond_to do |format|
-      if @vote.save
-        @parent_id = params[:parent_id]
-
-        if(@parent_id == nil)
-          redirect_to post_path(:id => params[:id])
-        else
-          redirect_to post_path
-          end
-        flash[:success] = "Vote updated successfully"
-      else
-        redirect_to :back
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-
 end

@@ -1,20 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Postid:</b>
-  <%= link_to @vote.post_id , @vote.post %>
-</p>
 
-<p>
-  <b>Userid:</b>
-  <%= link_to @vote.user.username , @vote.user %>
-</p>
-
-<p>
-  <b>Votedate:</b>
-  <%= @vote.updated_at%>
-</p>
-
-
-<%= link_to 'Edit', edit_vote_path(@vote) %> |
-<%= link_to 'Back', votes_path %>
+<% get_all_users(@vote.post_id).each do |vote| %>
+      <table>
+        <thead>
+          <th>Userid:</th>
+          <th>Votedate:</th>
+        </thead>
+        <tbody>
+          <td><%= link_to vote.user.username , @vote.user %></td>
+          <td> <%= vote.updated_at%></td>
+        </tbody>
+      </table>
+<% end %>
