@@ -1,3 +1,4 @@
+<h1>Listing all posts</h1>
 <script type="text/javascript" xmlns="http://www.w3.org/1999/html">
 
     function ChangeColor(tableRow, highLight)
@@ -17,46 +18,50 @@
         document.location.href = theUrl;
     }
     var currentpost;
-    function toggle(id) {
-
+    function toggle(id)
+    {
         currentpost = id;
-        var ele = document.getElementById(currentpost);
-        var text = document.getElementById(currentpost);
+
+        for (var i = 0; i < id.length; i++)
+        {
+        var ele = document.getElementById(id[i]);
+        var text = document.getElementById(id[i]);
         var comments = document.getElementById("comments");
         if(ele.style.display == "block") {
             ele.style.display = "none";
             text.style.display = "show";
-            comments.style.display = "show";
         }
-        else {
+        else
+        {
             ele.style.display = "block";
             text.style.display = "hide";
-            comments.style.display = "hide";
         }
+        }
+    }
 
      function setCurrentPost(id){
-         document.write("setting current post id to");
+
          currentpost = id;
      }
 
      function getCurrentPost(){
-        document.write(" getting currentpost : "+currentpost);
+
         return currentpost ;
      }
-    }
+
 </script>
 
 
-<h1><% "javascript:currentpost" %> </h1>
+<div class="spacer"></div>
 
-<% @posts.each do |post| %>
+<% get_all_posts().each do |post| %>
       <div class="post">
-        <span class="left"><%= link_to post.user.username, post.user  %><br />
-          <b>Created: </b><%=post.created_at %><br />
-          <b>Updated: </b><%= post.updated_at %><br />
+        <span class="left"><%= link_to post.user.username, post.user  %><br /> <br />
+          <b>Created: </b><%=get_datetime_string(post.created_at) %><br />
+          <b>Updated: </b><%= get_datetime_string(post.updated_at) %><br />
 
         </span>
-        <span class="right" onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false); " onclick="javascript:toggle(<%= post.id %>);">
+        <span class="right" onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false); " onclick="javascript:toggle(<%= get_all_comment_ids_for_post(post.id) %>);">
 
         <%= post.content %></span>
         <span class="bottom">
@@ -64,7 +69,7 @@
             <%= link_to "Edit", edit_post_path(post) %> &nbsp;
             <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
           <% end %>
-          <%= link_to 'Comment', post, method: :get %>
+          <%= link_to 'Comment', post, method: :get , :is_post => "true" %>
           <% if !post.user.current_user? current_user.username or current_user.admin? %>
               <% if !user_voted? post.id %>
                 <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
@@ -78,8 +83,7 @@
                 <% end %>
               <% end %>
           <% end %>
-          </br>
-          </br>
+           <br/>
           <%= link_to vote_text(post.id), Vote.find_by_post_id(post.id)%>
         </span>
 
@@ -87,21 +91,33 @@
 
     <div id="comments" style="display: none"><h3><u>Comments</u></h3> </div>
     <% get_all_comments_for_post(post.id).each do |p| %>
-
-        <div class="post"  id="<%= post.id %>" style="display: none">
-        <span class="comment-left"><%= get_user(p.user_id) %><br />
+        <div class="post"  id="<%= p.id %>" style="display: none">
+        <span class="comment-left"><%= link_to p.user.username, p.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
-          <b>Votes: </b><%=  get_votes_for_post(p.id) %>
-
         </span>
           <span class="comment-right"><%= p.content %></span>
         <span class="comment-bottom">
-          <%  if(admin_or_owner?(p.id)) %>
-          <%= link_to "Edit", edit_post_path(p) %> <br />
-              <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %>
-             <% end %>
-          <%= link_to 'Vote', update_vote_path() %>   <br />
+          <% if p.user.current_user? current_user.username or current_user.admin? %>
+              <%= link_to "Edit", edit_post_path(p) %> &nbsp;
+              <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
+          <% end %>
+          <%= link_to 'Comment', p, method: :get , :is_post => "true" %>
+          <% if !p.user.current_user? current_user.username or current_user.admin? %>
+              <% if !user_voted? p.id %>
+                  <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
+                      <div class="inputs">
+                        <%= f.hidden_field :user_id, :value => current_user.id %>
+                        <%= f.hidden_field :post_id, :value => p.id %>
+                      </div>
+                      <div class="actions">
+                        <%= f.button 'Vote' %>
+                      </div>
+                  <% end %>
+              <% end %>
+          <% end %>
+          <br/>
+          <%= link_to vote_text(p.id), Vote.find_by_post_id(p.id)%>
         </span>
         </div>
     <% end %>
@@ -111,4 +127,4 @@
 
 <br />
 
-<%= link_to 'New Post', new_post_path %>
+<%= link_to 'Create new post', new_post_path %>

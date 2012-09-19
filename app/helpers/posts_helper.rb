@@ -32,4 +32,5 @@ module PostsHelper
   def vote_count id
     Vote.count(:conditions => { :post_id => id })
   end
+
 end

@@ -24,38 +24,80 @@
                   </div>
                 <% end %>
               <% end %>
-          <% end %>
-           </br>
-           </br>
-           <%= link_to vote_text(@post.id), Vote.find_by_post_id(@post.id)%>
+               <%= link_to vote_text(@post.id), Vote.find_by_post_id(@post.id)%>
+           <% end %>
+
+
         </span>
 </div>
 
-<div id="comments"><h3><u>Comments</u></h3>
+<%if not get_all_comments_for_post(@post.id).empty? %>
+<div id="comments"><h3>Comments</h3>
 
         <% get_all_comments_for_post(@post.id).each do |p| %>
-        <div class="post" >
-        <span class="comment-left"><%= get_user(p.user_id) %><br />
+      <div class="post">
+
+        <span class="comment-left"><%= link_to p.user.username, p.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
-          <b>Votes: </b><%=  get_votes_for_post(p.id) %>
 
         </span>
-            <span class="comment-right"><%= p.content %></span>
-        <span class="comment-bottom">
-          <%  if(admin_or_owner?(p.id)) %>
-          <%= link_to "Edit", edit_post_path(p) %> <br />
-          <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %>
-             <% end %>
-              <br />
-          <%= link_to 'Vote', update_vote_path() %>   <br />
 
+          <span class="comment-right">
+        <%= p.content %></span>
+        <span class="comment-bottom">
+          <% if p.user.current_user? current_user.username or current_user.admin? %>
+              <%= link_to "Edit", edit_post_path(p) %> &nbsp;
+              <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
+          <% end %>
+          <%= link_to 'Comment', p, method: :get , :is_post => "true" %>
+          <% if !p.user.current_user? current_user.username or current_user.admin? %>
+              <% if !user_voted? p.id %>
+                  <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
+                      <div class="inputs">
+                        <%= f.hidden_field :user_id, :value => current_user.id %>
+                        <%= f.hidden_field :post_id, :value => p.id %>
+                      </div>
+                      <div class="actions">
+                        <%= f.button 'Vote' %>
+                      </div>
+                  <% end %>
+              <% end %>
+          <% end %>
+          <br/>
+          <%= link_to vote_text(p.id), Vote.find_by_post_id(p.id)%>
         </span>
       </div>
 </div>
+      <%end%>
 
 
   <% end %>
+
+ <div class="spacer">
+ </div>
+
+
+<%= form_for(@post, :url => new_post_path, :method => "post") do |f| %>
+    <div class="field">
+      <%= f.label :category_id %><br />
+      <%= select("post", "category_id", Category.find(:all).collect{ |c| [ c.name, c.id] }) %>
+
+    </div>
+
+    <div class="field">
+      <%= f.label :content %><br />
+      <%= f.text_field :content, :size => "100" %>
+      <%= f.hidden_field :parent_id, :value => @post.id %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Create Comment" %>
+    </div>
+    <% end %>
+
+
+
  <br />
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<!-- <%= link_to 'Edit', edit_post_path(@post) %> -->
+<%= link_to 'Back to all posts', posts_path %>
