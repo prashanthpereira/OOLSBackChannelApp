@@ -36,9 +36,9 @@
     <h2>Reports: </h2>
     <table>
       <tr>
-        <th>Name: </th>
-        <th>Post Id: </th>
-        <th>Total Votes count for User: </th>
+        <th>Name </th>
+        <th>Total number of posts </th>
+        <th>Total Votes count for User </th>
         <th></th>
         <th></th>
         <th></th>
@@ -46,7 +46,7 @@
       <% @users.each do |user| %>
           <tr>
             <td><%= user.username %></td>
-            <td><%= get_all_postid_for_user(user.id) %></td>
+            <td><%= get_all_postid_for_user(user.id).count %></td>
             <td><%= get_vote_count(get_all_postid_for_user(user.id)) %></td>
           </tr>
       <% end %>
