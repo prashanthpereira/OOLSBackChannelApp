@@ -68,9 +68,11 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    #re ask user for password if field is empty
     if params[:user][:password].nil? or params[:user][:password].empty?
       params[:user][:password] = @user.password
     end
+    #re ask user for password if password confirmation field is empty
     if params[:user][:password_confirmation].nil? or params[:user][:password_confirmation].empty?
       params[:user][:password_confirmation] = @user.password_confirmation
     end
