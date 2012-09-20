@@ -46,9 +46,11 @@ class VotesController < ApplicationController
 
     respond_to do |format|
       if @vote.save
+        #update the last modified for the post that the vote was made for
         post = @vote.post
         post.updated_at = @vote.updated_at
         post.save
+        #if the vote was for a comment update the last modified of parent post as well
         if post.parent_id?
           parent_post = Post.find(post.parent_id)
           parent_post.updated_at = post.updated_at

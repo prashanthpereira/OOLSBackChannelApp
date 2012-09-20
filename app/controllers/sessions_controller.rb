@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
+  #skip the check if a user is logged in
   skip_before_filter :require_login
 
+  #Sign Up a new or redirect an existing user to a root
   def new
     if !signed_in?
       render 'new'
@@ -9,6 +11,7 @@ class SessionsController < ApplicationController
     end
   end
 
+  #authenticate an existing user and redirect to home page.
   def create
       user = User.find_by_username(params[:session][:username])
       if user && user.authenticate(params[:password])
@@ -22,6 +25,7 @@ class SessionsController < ApplicationController
       end
   end
 
+  #signout and remove the cookie
   def destroy
     sign_out
     redirect_to root_url
