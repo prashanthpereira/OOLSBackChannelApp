@@ -51,11 +51,11 @@
     {
         if (highLight)
         {
-            tableRow.style.backgroundColor = '#ADD6e0';
+            tableRow.style.backgroundColor = '#FFFF99';
         }
         else
         {
-            tableRow.style.backgroundColor = 'white';
+            tableRow.style.backgroundColor = '#FFFFCC';
         }
     }
 
@@ -153,7 +153,7 @@
               <%= link_to "Edit", edit_post_path(p) %> &nbsp;
               <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
           <% end %>
-          <%= link_to 'Comment', p, method: :get , :is_post => "true" %>
+
           <% if !p.user.current_user? current_user.username or current_user.admin? %>
               <% if !user_voted? p.id %>
                   <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
