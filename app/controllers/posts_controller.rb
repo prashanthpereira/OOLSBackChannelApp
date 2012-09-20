@@ -69,17 +69,7 @@ class PostsController < ApplicationController
       end
   end
 
-=begin
-  def create
-    @post = Post.new(:content => params[:post][:content], :topic_id => params[:post][:topic_id], :user_id => current_user.id)
-    if @post.save
-      flash[:notice] = "Successfully created post."
-      redirect_to "/topics/#{@post.topic_id}"
-    else
-      render :action => 'new'
-    end
-  end
-=end
+
    def showComments
      @post = Post.find(params[:id])
 
@@ -111,19 +101,7 @@ class PostsController < ApplicationController
     end
   end
 
-=begin
-  def update
-    @post = Post.find(params[:id])
-    if @post.update_attributes(params[:post])
-      @topic = Topic.find(@post.topic_id)
-      @topic.update_attributes(:last_poster_id => current_user.id, :last_post_at => Time.now)
-      flash[:notice] = "Successfully updated post."
-      redirect_to @post
-    else
-      render :action => 'edit'
-    end
-  end
-=end
+
 
   # DELETE /posts/1
   # DELETE /posts/1.json
@@ -137,27 +115,36 @@ class PostsController < ApplicationController
     end
   end
 
+  # This function is used for the search functionality for posts
+  # The search can be based depending on user, category or content.
+
    def search
      Rails.logger.debug("Inside search ")
-    #search = params[:search]
+
+    # remove leading and trailing whitespaces from the search string
+    # returned by the view
 
      if not (params[:search].strip.empty?)
-
+     # if search condition is based on username, first get the userid for that username from the
+     # user table. Then, get all posts from the post table that have user_id = userid.
+    # Since only posts need to be searched, the parent_id should be null for the returned posts.
       if(params[:theme]=="user")
       allusers =  User.all( :select => "id", :conditions => ['username LIKE ?', "%#{params[:search].strip}%"])
       @searchResults = Post.all(:conditions => ["user_id  in (?) and parent_id IS NULL", allusers])
+
+        #if search condition is based on category, first search the category table for the category id using the
+        # category name obtained from the view.
+        # Then get the posts which have that category id in the category_id field.
     elsif(params[:theme]=="category")
       categories =  Category.all( :select => "id", :conditions => ['name LIKE ?', "%#{params[:search].strip}%"])
       @searchResults = Post.all(:conditions => ["category_id  in (?) and parent_id IS NULL", categories])
     else
+      # if search is based on content, get all posts which have the matching content text in the content field
       @searchResults =  Post.all(:conditions => ['content LIKE ? and parent_id IS NULL', "%#{params[:search].strip}%"])
 
     end
     end
-    Rails.logger.debug(params[:search].strip)
-     Rails.logger.debug(params[:theme])
     respond_to do |format|
-    #format.html {redirect_to :controller => "posts", :action => 'index'}
     format.html {render action: "index" }
     end
    end
