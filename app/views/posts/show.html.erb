@@ -5,7 +5,9 @@
         <span class="left"><%= get_user(@post.user_id)  %><br />
           <b>Created: </b><%=get_datetime_string(@post.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(@post.updated_at) %><br />
-
+          <% if not (@post.category.nil?)%>
+          <b>Category: </b><%= @post.category.name %><br />
+          <%end%>
         </span>
   <span class="right"><%= @post.content %></span>
          <span class="bottom">
@@ -41,7 +43,9 @@
         <span class="comment-left"><%= link_to p.user.username, p.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
-
+          <% if not (p.category.nil?)%>
+          <b>Category: </b><%= p.category.name %><br />
+          <%end%>
         </span>
 
           <span class="comment-right">

@@ -28,7 +28,9 @@
         <span class="left"><%= link_to search.user.username, search.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(search.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(search.updated_at) %><br />
-
+          <% if not (search.category.nil?)%>
+          <b>Category: </b><%= search.category.name %><br />
+          <%end%>
         </span>  <span class="right">
         <%= search.content %></span>
 
@@ -103,7 +105,9 @@
         <span class="left"><%= link_to post.user.username, post.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(post.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(post.updated_at) %><br />
-
+          <% if not (post.category.nil?)%>
+          <b>Category: </b><%= post.category.name %><br />
+          <%end%>
         </span>
         <span class="right" onmouseover="ChangeColor(this, true);" onmouseout="ChangeColor(this, false); " onclick="javascript:toggle(<%= get_all_comment_ids_for_post(post.id) %>);">
 
@@ -139,6 +143,9 @@
         <span class="comment-left"><%= link_to p.user.username, p.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
+          <% if not (p.category.nil?)%>
+          <b>Category: </b><%= p.category.name %><br />
+          <%end%>
         </span>
           <span class="comment-right"><%= p.content %></span>
         <span class="comment-bottom">
