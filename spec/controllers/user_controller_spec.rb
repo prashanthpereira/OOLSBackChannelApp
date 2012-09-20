@@ -8,13 +8,5 @@ describe UsersController do
     end
   end
 
-  describe "GET #show" do
-    it "shows user details" do
-      get :show
-      response.should be_redirect
-    end
-  end
-
-
 end
 
