@@ -48,10 +48,19 @@ class PostsController < ApplicationController
     @post.user_id = current_user.id
     respond_to do |format|
     if @post.save
-      #flash[:notice] = "Successfully created post."
-      #redirect_to "/posts"
-      format.html { redirect_to @post, notice: 'Post was successfully created.' }
-      format.json { head :no_content }
+      if @post.parent_id?
+        parent_post = Post.find(@post.parent_id)
+        parent_post.updated_at = @post.updated_at
+        parent_post.save
+        format.html { redirect_to parent_post, notice: 'Post was successfully created.' }
+        format.json { head :no_content }
+      else
+        #flash[:notice] = "Successfully created post."
+        #redirect_to "/posts"
+        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.json { head :no_content }
+      end
+
     else
       #render :action => 'new'
       format.html { render action: "new" }
@@ -83,8 +92,18 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.update_attributes(params[:post])
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
-        format.json { head :no_content }
+        if @post.parent_id?
+          parent_post = Post.find(@post.parent_id)
+          parent_post.updated_at = @post.updated_at
+          parent_post.save
+          format.html { redirect_to parent_post, notice: 'Post was successfully created.' }
+          format.json { head :no_content }
+        else
+          #flash[:notice] = "Successfully created post."
+          #redirect_to "/posts"
+          format.html { redirect_to @post, notice: 'Post was successfully created.' }
+          format.json { head :no_content }
+        end
       else
         format.html { render action: "edit" }
         format.json { render json: @post.errors, status: :unprocessable_entity }

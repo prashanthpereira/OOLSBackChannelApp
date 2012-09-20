@@ -49,7 +49,18 @@ class VotesController < ApplicationController
         post = @vote.post
         post.updated_at = @vote.updated_at
         post.save
-        format.html { redirect_to post, notice: 'Vote was successfully created.' }
+        if post.parent_id?
+          parent_post = Post.find(post.parent_id)
+          parent_post.updated_at = post.updated_at
+          parent_post.save
+          format.html { redirect_to parent_post, notice: 'Vote was successfully created.' }
+          format.json { head :no_content }
+        else
+          #flash[:notice] = "Successfully created post."
+          #redirect_to "/posts"
+          format.html { redirect_to post, notice: 'Vote was successfully created.' }
+          format.json { head :no_content }
+        end
       else
         format.html { render action: "new" }
         format.json { render json: @vote.errors, status: :unprocessable_entity }
