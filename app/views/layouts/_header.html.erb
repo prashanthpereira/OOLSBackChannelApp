@@ -11,6 +11,9 @@
                   <%= link_to "Categories", categories_path %>
               <% end %>
               <%= link_to "Sign out", signout_path, method: "delete" %>
+              <span style='margin-left: 750px;'>
+              Logged in as: <b><%= current_user.name %></b>
+                  </span>
           <% else %>
               <%= link_to "Sign in", signin_path %>
           <% end %>

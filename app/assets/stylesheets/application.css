@@ -16,13 +16,13 @@ table tr td {border:1px #ccc solid; padding:5px;}
 table tr td.right {background: #eee;}
 table tr td h4 {margin:0; padding:0; font-weight:normal; color:#000}
 .post {width:80%; display:table;}
-.post span {padding:5px; border:2px solid #0066FF; margin:0;}
-.post span.left {width:175px; background:  #ADD6e0; border:2px solid   #0066FF; display:table-cell;}
-.post span.bottom {width:100px; background:	#ffffff; display:table-cell;}
-.post span.right { width:400px; border:2px solid 	#0066FF; display:table-cell;}
-.post span.comment-left {width:270px; background:	#feeeee; border:2px solid 	#E99999; display:table-cell;}
-.post span.comment-bottom {width:160px; background:	#ffffff; border:2px solid 	#E99999; display:table-cell;}
-.post span.comment-right { width:610px; background:	#ffffff; border:2px solid 	#E99999; display:table-cell;}
+.post span {padding:5px; border:2px solid #ffffff; margin:0;}
+.post span.left {width:175px; background:  #FFFFCC; border:2px solid   #ffffff; display:table-cell;}
+.post span.bottom {width:100px; background:	#FFFFCC; display:table-cell;}
+.post span.right { width:400px;  background:	#FFFFCC; border:2px solid 	#ffffff; display:table-cell;}
+.post span.comment-left {width:270px; background:	#ffffff; border:2px solid 	#FFFFCC; display:table-cell;}
+.post span.comment-bottom {width:160px; background:	#ffffff; border:2px solid 	#FFFFCC; display:table-cell;}
+.post span.comment-right { width:610px; background:	#ffffff; border:2px solid 	#FFFFCC; display:table-cell;}
 #header {width:75%; margin:0 auto;}
 .spacer {height: 50px;}
 
