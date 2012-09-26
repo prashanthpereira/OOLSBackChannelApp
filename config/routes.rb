@@ -14,7 +14,7 @@ OOLSBackChannelApp::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
   match '/posts/new', to: 'posts#create'
   match '/search',to: 'posts#search'
-
+  match '/searchbefore',to: 'sessions#searchbefore'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

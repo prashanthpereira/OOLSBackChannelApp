@@ -143,11 +143,15 @@ class PostsController < ApplicationController
       @searchResults =  Post.all(:conditions => ['content LIKE ? and parent_id IS NULL', "%#{params[:search].strip}%"])
 
     end
-    end
-    respond_to do |format|
+     end
+
+       respond_to do |format|
     format.html {render action: "index" }
+
     end
    end
+
+
 
 
 
