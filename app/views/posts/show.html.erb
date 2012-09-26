@@ -2,7 +2,7 @@
 
 
 <div class="post">
-        <span class="left"><%= get_user(@post.user_id)  %><br />
+        <span class="left"><%= link_to get_username(@post.user), @post.user  %><br />
           <b>Created: </b><%=get_datetime_string(@post.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(@post.updated_at) %><br />
           <% if not (@post.category.nil?)%>
@@ -11,11 +11,11 @@
         </span>
   <span class="right"><%= @post.content %></span>
          <span class="bottom">
-          <% if @post.user.current_user? current_user.username or current_user.admin? %>
+          <% if current_user.current_user? @post.user or current_user.admin? %>
             <%= link_to "Edit", edit_post_path(@post) %> &nbsp;
                <%= link_to 'Delete', @post, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
           <% end %>
-           <% if !@post.user.current_user? current_user.username or current_user.admin? %>
+           <% if !current_user.current_user? @post.user %>
              <% if !user_voted? @post.id %>
                 <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
                   <div class="inputs">
@@ -40,7 +40,7 @@
         <% get_all_comments_for_post(@post.id).each do |p| %>
       <div class="post">
 
-        <span class="comment-left"><%= link_to p.user.username, p.user  %><br /> <br />
+        <span class="comment-left"><%= link_to get_username(p.user), p.user  %><br /> <br />
           <b>Created: </b><%=get_datetime_string(p.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(p.updated_at) %><br />
           <% if not (p.category.nil?)%>
@@ -51,12 +51,12 @@
           <span class="comment-right">
         <%= p.content %></span>
         <span class="comment-bottom">
-          <% if p.user.current_user? current_user.username or current_user.admin? %>
+          <% if current_user.current_user? p.user or current_user.admin? %>
               <%= link_to "Edit", edit_post_path(p) %> &nbsp;
               <%= link_to 'Delete', p, method: :delete, data: { confirm: 'Are you sure?' } %> <br />
           <% end %>
 
-          <% if !p.user.current_user? current_user.username or current_user.admin? %>
+          <% if !current_user.current_user? p.user %>
               <% if !user_voted? p.id %>
                   <%= form_for Vote.new, :url => {:controller => "votes", :action => "create"} do |f| %>
                       <div class="inputs">
@@ -88,7 +88,7 @@
 
     <div class="field">
       <%= f.label "Comment" %><br />
-      <%= f.text_field :content, :size => "100" %>
+      <%= f.text_field :content, :size => "100", :value => "" %>
       <%= f.hidden_field :parent_id, :value => @post.id %>
     </div>
 

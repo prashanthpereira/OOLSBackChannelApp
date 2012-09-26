@@ -95,6 +95,12 @@ module ApplicationHelper
      values.inject{|sum,y| sum + y }
   end
 
-
-
+  def get_username user
+    if user == nil
+      "Anonymous"
+    elsif
+       name = user.username
+       name
+    end
+  end
 end

@@ -24,7 +24,7 @@
     <%end%>
     <% for search in @searchResultsLogin %>
         <div class="post">
-        <span class="left"><%= search.user.username %><br /> <br />
+        <span class="left"><%= get_username(search.user) %><br /> <br />
           <b>Created: </b><%=get_datetime_string(search.created_at) %><br />
           <b>Updated: </b><%= get_datetime_string(search.updated_at) %><br />
           <% if not (search.category.nil?)%>

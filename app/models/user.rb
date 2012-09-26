@@ -34,10 +34,12 @@ class User < ActiveRecord::Base
   end
 
   #return true if username is current user's username
-  def current_user? username
-    if self.username == username
+  def current_user? user
+    if user == nil
+      false
+    elsif self.username == user.username
        true
-    else
+    elsif
       false
     end
   end

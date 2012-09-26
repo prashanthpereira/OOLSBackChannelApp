@@ -20,10 +20,10 @@
         <td><%= user.role %></td>
     <% end %>
     <td><%= link_to 'Show', user %></td>
-    <% if user.current_user? current_user.username or current_user.admin? %>
+    <% if user.current_user? current_user or current_user.admin? %>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <% end %>
-    <% if current_user.admin? and !user.current_user? current_user.username  %>
+    <% if current_user.admin? and !user.current_user? current_user  %>
         <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     <% end %>
   </tr>

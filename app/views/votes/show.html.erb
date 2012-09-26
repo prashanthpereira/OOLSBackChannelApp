@@ -11,7 +11,7 @@
 
         <% get_all_users(@vote.post_id).each do |vote| %>
             <tbody>
-          <td><%= link_to vote.user.username , @vote.user %></td>
+          <td><%= link_to get_username(vote.user) , @vote.user %></td>
           <td> <%= vote.updated_at%></td>
             </tbody>
         <% end %>
